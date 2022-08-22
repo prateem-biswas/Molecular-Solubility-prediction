@@ -3,9 +3,9 @@ import pandas as pd
 import streamlit as st
 import pickle
 from PIL import Image
-#rom rdkit import Chem
-#from rdkit.Chem import Descriptors
-#from rdkit.Chem import Draw
+from rdkit import Chem
+from rdkit.Chem import Descriptors
+from rdkit.Chem import Draw
 
 
 
