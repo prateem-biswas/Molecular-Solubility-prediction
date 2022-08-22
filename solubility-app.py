@@ -1,105 +1,77 @@
-######################
-# Import libraries
-######################
 import numpy as np
 import pandas as pd
 import streamlit as st
 import pickle
 from PIL import Image
-from rdkit import Chem
-from rdkit.Chem import Descriptors
+#rom rdkit import Chem
+#from rdkit.Chem import Descriptors
+#from rdkit.Chem import Draw
 
-######################
-# Custom function
-######################
-## Calculate molecular descriptors
-def AromaticProportion(m):
-  aromatic_atoms = [m.GetAtomWithIdx(i).GetIsAromatic() for i in range(m.GetNumAtoms())]
-  aa_count = []
-  for i in aromatic_atoms:
-    if i==True:
-      aa_count.append(1)
-  AromaticAtom = sum(aa_count)
-  HeavyAtom = Descriptors.HeavyAtomCount(m)
-  AR = AromaticAtom/HeavyAtom
-  return AR
 
-def generate(smiles, verbose=False):
 
-    moldata= []
-    for elem in smiles:
-        mol=Chem.MolFromSmiles(elem)
-        moldata.append(mol)
+# Calculate molecular descriptors
+def AromaticProportion(m) :
+	AromaticAtom = sum([m.GetAtomWithIdx(i).GetIsAromatic() for i in range(m.GetNumAtoms())])
+	HeavyAtom = Descriptors.HeavyAtomCount(m)
+	AP = AromaticAtom/HeavyAtom
+	return AP
 
-    baseData= np.arange(1,1)
-    i=0
-    for mol in moldata:
+def calculate(smiles) :
+	moldata= []
+	for elem in smiles :
+		mol=Chem.MolFromSmiles(elem)
+		moldata.append(mol)
 
-        desc_MolLogP = Descriptors.MolLogP(mol)
-        desc_MolWt = Descriptors.MolWt(mol)
-        desc_NumRotatableBonds = Descriptors.NumRotatableBonds(mol)
-        desc_AromaticProportion = AromaticProportion(mol)
+	desc_MolLogP = []
+	desc_MolWt = []
+	desc_Rotatable_Bonds = []
+	desc_Aromatic_Proportion = []    
 
-        row = np.array([desc_MolLogP,
-                        desc_MolWt,
-                        desc_NumRotatableBonds,
-                        desc_AromaticProportion])
+	for mol in moldata :
+		desc_MolLogP.append(Descriptors.MolLogP(mol))
+		desc_MolWt.append(Descriptors.MolWt(mol))
+		desc_Rotatable_Bonds.append(Descriptors.NumRotatableBonds(mol))
+		desc_Aromatic_Proportion.append(AromaticProportion(mol))
 
-        if(i==0):
-            baseData=row
-        else:
-            baseData=np.vstack([baseData, row])
-        i=i+1
+	table = {"LogP" : desc_MolLogP , "MolWt" : desc_MolWt , "RotatableBonds": desc_Rotatable_Bonds, "Aromatic Proportion" : desc_Aromatic_Proportion }
+	descriptors = pd.DataFrame(table)
 
-    columnNames=["MolLogP","MolWt","NumRotatableBonds","AromaticProportion"]
-    descriptors = pd.DataFrame(data=baseData,columns=columnNames)
+	return descriptors
 
-    return descriptors
 
-######################
-# Page Title
-######################
-
-image = Image.open('solubility-logo.jpg')
-
-st.image(image, use_column_width=True)
-
-st.write("""
-# Molecular Solubility Prediction Web App
-
-This app predicts the **Solubility (LogS)** values of molecules!
-
-Data obtained from the John S. Delaney. [ESOL:  Estimating Aqueous Solubility Directly from Molecular Structure](https://pubs.acs.org/doi/10.1021/ci034243x). ***J. Chem. Inf. Comput. Sci.*** 2004, 44, 3, 1000-1005.
-***
+st.markdown("""
+# Molecular Solubility Predictor App
 """)
 
+image = Image.open('solubility-logo.jpg')
+st.image(image, use_column_width = True)
 
-######################
-# Input molecules (Side Panel)
-######################
+st.write("""
+
+
+### Use this app to get the predicted **Solubility (LogS)** values of molecules!
+
+
+""")
 
 st.sidebar.header('User Input Features')
 
-## Read SMILES input
-SMILES_input = "NCCCC\nCCC\nCN"
+# Smiles Input
+SMILES_input = "NCCCC\nCN"
 
-SMILES = st.sidebar.text_area("SMILES input", SMILES_input)
-SMILES = "C\n" + SMILES #Adds C as a dummy, first item
+SMILES = st.sidebar.text_area("Enter your SMILES values", SMILES_input)
+SMILES = "C\n" + SMILES 		#Adds C as a dummy, first item
 SMILES = SMILES.split('\n')
 
-st.header('Input SMILES')
+st.header('SMILES values :')
 SMILES[1:] # Skips the dummy first item
 
 ## Calculate molecular descriptors
-st.header('Computed molecular descriptors')
-X = generate(SMILES)
+st.header('Computed Molecular Descriptors')
+X = calculate(SMILES)
 X[1:] # Skips the dummy first item
 
-######################
-# Pre-built model
-######################
-
-# Reads in saved model
+# Loading the pickle file
 load_model = pickle.load(open('solubility_model.pkl', 'rb'))
 
 # Apply model to make predictions
@@ -108,3 +80,12 @@ prediction = load_model.predict(X)
 
 st.header('Predicted LogS values')
 prediction[1:] # Skips the dummy first item
+
+
+
+st.write("""
+
+Data obtained from the John S. Delaney. [ESOL:  Estimating Aqueous Solubility Directly from Molecular Structure](https://pubs.acs.org/doi/10.1021/ci034243x). ***J. Chem. Inf. Comput. Sci.*** 2004, 44, 3, 1000-1005.
+***
+
+	""")
