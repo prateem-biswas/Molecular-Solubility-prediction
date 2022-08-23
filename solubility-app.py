@@ -108,10 +108,10 @@ i = 0
 for item in SMILES :
     st.header(f"Molecule {i+1}")
     
-    mol=Chem.MolFromSmiles(item)
-    im = Chem.Draw.MolToImage(mol)
-    st.markdown("""**Stucture :**""")
-    st.image(im)
+#     mol=Chem.MolFromSmiles(item)
+#     im = Chem.Draw.MolToImage(mol)
+#     st.markdown("""**Stucture :**""")
+#     st.image(im)
 
     st.markdown(f""" **SMILES** : {item} <br>
         **LogP** : {X.iloc[i,0]:.2f} <br>
