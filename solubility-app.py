@@ -84,6 +84,13 @@ st.header('Predicted LogS values')
 #prediction[1:] # Skips the dummy first item
 prediction
 
+moldata= []
+	for elem in SMILES :
+		mol=Chem.MolFromSmiles(elem)
+		im = Chem.Draw.MolToImage(mol)
+		
+		st.image(im)
+		
 
 
 st.write("""
