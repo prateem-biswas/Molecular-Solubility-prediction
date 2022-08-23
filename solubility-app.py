@@ -5,7 +5,6 @@ import pickle
 from PIL import Image
 from rdkit import Chem
 from rdkit.Chem import Descriptors
-from rdkit.Chem.Draw import IPythonConsole
 #from rdkit.Chem import Draw
 
 
@@ -48,11 +47,7 @@ image = Image.open('solubility-logo.jpg')
 st.image(image, use_column_width = True)
 
 st.write("""
-
-
 ### Use this app to get the predicted **Solubility (LogS)** values of molecules!
-
-
 """)
 
 st.sidebar.header('User Input Features')
@@ -61,18 +56,18 @@ st.sidebar.header('User Input Features')
 SMILES_input = "NCCCC\nCN"
 
 SMILES = st.sidebar.text_area("Enter your SMILES values", SMILES_input)
-#SMILES = "C\n" + SMILES 		#Adds C as a dummy, first item
+SMILES = "C\n" + SMILES 		#Adds C as a dummy, first item
 SMILES = SMILES.split('\n')
 
 st.header('SMILES values :')
-#SMILES[1:] # Skips the dummy first item
+SMILES[1:] # Skips the dummy first item
 SMILES
 
 ## Calculate molecular descriptors
 st.header('Computed Molecular Descriptors')
 X = calculate(SMILES)
-#X[1:] # Skips the dummy first item
-X
+X[1:] # Skips the dummy first item
+#X
 
 # Loading the pickle file
 load_model = pickle.load(open('solubility_model.pkl', 'rb'))
@@ -82,21 +77,20 @@ prediction = load_model.predict(X)
 #prediction_proba = load_model.predict_proba(X)
 
 st.header('Predicted LogS values')
-#prediction[1:] # Skips the dummy first item
-prediction
+prediction[1:] # Skips the dummy first item
+#prediction
 
-moldata= []
-for elem in SMILES :
-	mol=Chem.MolFromSmiles(elem)
-	im = Chem.Draw.MolToImage(mol)
+# moldata= []
+# for elem in SMILES :
+# 	mol=Chem.MolFromSmiles(elem)
+# 	im = Chem.Draw.MolToImage(mol)
 	
-	st.image(im)
+# 	st.header("Stucture")
+# 	st.image(im)
 		
 
 
 st.write("""
-
 Data obtained from the John S. Delaney. [ESOL:  Estimating Aqueous Solubility Directly from Molecular Structure](https://pubs.acs.org/doi/10.1021/ci034243x). ***J. Chem. Inf. Comput. Sci.*** 2004, 44, 3, 1000-1005.
 ***
-
 	""")
