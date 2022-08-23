@@ -5,6 +5,7 @@ import pickle
 from PIL import Image
 from rdkit import Chem
 from rdkit.Chem import Descriptors
+from rdkit.Chem.Draw import IPythonConsole
 #from rdkit.Chem import Draw
 
 
