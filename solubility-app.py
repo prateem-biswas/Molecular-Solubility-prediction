@@ -60,12 +60,18 @@ SMILES_input = "c1ccncc1\nCC=C(C)O\n O=C(O)c1ccccc1"
 SMILES = st.sidebar.text_area("Enter your SMILES values", SMILES_input)
 
 st.sidebar.write(""" ### Examples of some SMILES codes
-    Benzene : c1ccccc1 
+    Benzene : c1ccccc1
+    
     Ethanol : CCO
+    
     Methane : C
+    
     Octanol : CCCCCCCCO
+    
     Methyl amine : CN
+    
     Anisole : COc1ccccc1
+    
     Aspirin : O=C(C)Oc1ccccc1C(=O)O
 
 
