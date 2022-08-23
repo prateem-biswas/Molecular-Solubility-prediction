@@ -85,11 +85,11 @@ st.header('Predicted LogS values')
 prediction
 
 moldata= []
-	for elem in SMILES :
-		mol=Chem.MolFromSmiles(elem)
-		im = Chem.Draw.MolToImage(mol)
-		
-		st.image(im)
+for elem in SMILES :
+	mol=Chem.MolFromSmiles(elem)
+	im = Chem.Draw.MolToImage(mol)
+	
+	st.image(im)
 		
 
 
