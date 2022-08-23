@@ -55,7 +55,7 @@ st.write("""
 st.sidebar.header('User Input Features')
 
 # Smiles Input
-SMILES_input = "c1ccncc1\nCC=C(C)O\n O=C(O)c1ccccc1"
+SMILES_input = "c1ccncc1\nCC=C(C)O\nO=C(O)c1ccccc1"
 
 SMILES = st.sidebar.text_area("Enter your SMILES values", SMILES_input)
 
