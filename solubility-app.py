@@ -38,7 +38,7 @@ def calculate(smiles) :
 		desc_Rotatable_Bonds.append(Descriptors.NumRotatableBonds(mol))
 		desc_Aromatic_Proportion.append(AromaticProportion(mol))
 
-	table = {"LogP" : desc_MolLogP , "MolWt" : desc_MolWt , "RotatableBonds": desc_Rotatable_Bonds, "Aromatic Proportion" : desc_Aromatic_Proportion }
+	table = {"MolLogP" : desc_MolLogP , "MolWt" : desc_MolWt , "RotatableBonds": desc_Rotatable_Bonds, "AromaticProportion" : desc_Aromatic_Proportion }
 	descriptors = pd.DataFrame(table)
 
 	return descriptors
