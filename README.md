@@ -12,6 +12,7 @@ molecule in one dimensional form (SMILES notation) and returns the above values!
 
 
 Click on the button below to use the app <br>
+
 [![click](https://user-images.githubusercontent.com/105977171/186254747-e24a4395-747f-4d8b-8664-1cca7c354480.png)](https://prateem-biswas-molecular-solubility-predi-solubility-app-0gplt6.streamlitapp.com/)
 
 ## Project Description
@@ -52,3 +53,29 @@ So, by using the entire dataset, we have built a model that comes close to repli
 ![scatter](https://user-images.githubusercontent.com/105977171/186516508-59147d59-975c-477a-9d9e-b3e81d7cd7ea.png)
 
 ## Part 2 :
+
+The r2 score for the in the previous model left a lot of scope for improvement . For this the dataset containing the features and target values is loaded and split into training and testing data. To understand the various features better, the training data is visualized via pair plots :
+
+![pairplot](https://user-images.githubusercontent.com/105977171/186646497-95087088-0648-4d35-9d08-15cb7c36597b.png)
+
+The various plots reveal the following :<br>
+* Both the LogP and LogS values are normally distributed. LogP has a mean and standard deviation of **2.458** and **1.89** respectively, while for LogS the values are **-3.07** and **2.10** <br>
+![hist](https://user-images.githubusercontent.com/105977171/186651670-ffd36145-9922-4445-8371-557accea4e3d.png)
+* Both LogP and molecular weight are inversely proportional with the solubility values , while they are themselves linearly correlated <br>
+
+![subplot](https://user-images.githubusercontent.com/105977171/186654585-4e8662da-30a8-402f-aa0a-00cf73200523.png)
+
+Other two features do not show much correlation with the target variable
+
+For building a better model, various algorithms were tested and their R<sup>2</sup> scores were used as the evaluation matrix. It yeilded the following results:<br>
+
+![model_comp](https://user-images.githubusercontent.com/105977171/186655512-d1dba845-e3e5-48e7-8a0d-5e86471832bb.png)
+
+As observed, Random Forest model yeilded the best result with R<sup>2</sup> score of 0.88 . So it was chosen as the model for building the application.
+
+[View the app](https://prateem-biswas-molecular-solubility-predi-solubility-app-0gplt6.streamlitapp.com/)
+
+[Notebook : Part 1](https://github.com/prateem-biswas/Molecular-Solubility-prediction/blob/main/Predicting_solubity_of_molecules.ipynb)
+
+[Notebook : Part 2](https://github.com/prateem-biswas/Molecular-Solubility-prediction/blob/main/Analysis_and_Model_building.ipynb)
+
